@@ -120,9 +120,9 @@ Components:
   name: {type : String, required: true}
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  phonenumber: {type: Number}
-  createdCompany: [ { type: Schema.Types.ObjectId, ref:'Company' } ]
-  createdAppointment: [ { type: Schema.Types.ObjectId, ref:'Appointment' } ]
+  phonenumber: {type: Number},
+  createdCompany: [ { type: Schema.Types.ObjectId, ref:'Company' } ],
+  createdAppointment: [ { type: Schema.Types.ObjectId, ref:'Appointment' } ],
 }
 ```
 
@@ -131,8 +131,8 @@ Components:
 ```javascript
  {
    title: { type: String, required: true },
-   description: {type : String}
-   date : { type : Date}
+   description: {type : String},
+   date : { type : Date},
  }
 ```
 
@@ -143,8 +143,8 @@ Components:
    name: { type: String, required: true },
    img: { type: String } ,
    user: [ { type: Schema.Types.ObjectId, ref:'User' } ],
-   createdAppointment: [ { type: Schema.Types.ObjectId, ref:'Appointment' } ]
-   date: { type: Date}
+   createdAppointment: [ { type: Schema.Types.ObjectId, ref:'Appointment' } ],
+   date: { type: Date},
  }
 ```
 
