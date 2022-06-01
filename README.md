@@ -77,7 +77,6 @@ Components:
 - ProfileCard
 - CompanyCard
 - Navbar
-  -AgendaCard
 
 ## Services
 
@@ -122,10 +121,8 @@ Components:
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   phonenumber: {type: Number}
-	playerProfile: { type: Schema.Types.ObjectId, ref:'Player' },
   createdCompany: [ { type: Schema.Types.ObjectId, ref:'Company' } ]
   createdAppointment: [ { type: Schema.Types.ObjectId, ref:'Appointment' } ]
-  appointments: []
 }
 ```
 
@@ -135,8 +132,7 @@ Components:
  {
    title: { type: String, required: true },
    description: {type : String}
-   day: {type : Date}
-   hour:{type : Number}
+   date : { type : Date}
  }
 ```
 
@@ -147,11 +143,8 @@ Components:
    name: { type: String, required: true },
    img: { type: String } ,
    user: [ { type: Schema.Types.ObjectId, ref:'User' } ],
-   appointments: [],
-   openingDate: {type: Date},
-   closingDate: {type: Date},
-   openingHour: {type: Number},
-   closingHour: {type:Number}
+   createdAppointment: [ { type: Schema.Types.ObjectId, ref:'Appointment' } ]
+   date: { type: Date}
  }
 ```
 
@@ -159,25 +152,21 @@ Components:
 
 ## API Endpoints (backend routes)
 
-| HTTP Method | URL                | Request Body                                                                         | Success status | Error Status | Description                                                                                                                     |
-| ----------- | ------------------ | ------------------------------------------------------------------------------------ | -------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------- |
-| GET         | `/auth/profile `   | Saved session                                                                        | 200            | 404          | Check if user is logged in and return profile page                                                                              |
-| POST        | `/auth/signup`     | {name, email, password,phonenumber}                                                  | 201            | 404          | Checks if fields not empty (422) and user not exists (409), then create user with encrypted password, and store user in session |
-| POST        | `/auth/login`      | {email, password}                                                                    | 200            | 401          | Checks if fields not empty (422), if user exists (404), and if password matches (404), then stores user in session              |
-| POST        | `/auth/logout`     |                                                                                      | 204            | 400          | Logs out the user                                                                                                               |
-| GET         | `/company`         |                                                                                      |                | 400          | Show all companies/services                                                                                                     |
-| GET         | `/company/:id`     |                                                                                      |                |              | Show specific tournament                                                                                                        |
-| POST        | `/company/create`  | { name, img, user, appointment, openingDate, closingDate, openingHour, closingHour } | 201            | 400          | Create and save a new tournament                                                                                                |
-| PUT         | `/company/:id`     | {name, img, user, appointment, openingDate, closingDate, openingHour, closingHour }  | 200            | 400          | edit tournament                                                                                                                 |
-| DELETE      | `/company/:id`     |                                                                                      | 201            | 400          | delete tournament                                                                                                               |
-| GET         | `/api/player/:id`  |                                                                                      |                |              | show specific player                                                                                                            |
-| POST        | `/api/players`     | { name, img, tournamentId }                                                          | 200            | 404          | add player                                                                                                                      |
-| PUT         | `/api/players/:id` | { name, img }                                                                        | 201            | 400          | edit player                                                                                                                     |
-| DELETE      | `/api/players/:id` |                                                                                      | 200            | 400          | delete player                                                                                                                   |
-| GET         | `/api/games`       |                                                                                      | 201            | 400          | show games                                                                                                                      |
-| GET         | `/api/games/:id`   |                                                                                      |                |              | show specific game                                                                                                              |
-| POST        | `/api/games`       | {player1,player2,winner,img}                                                         |                |              | add game                                                                                                                        |
-| PUT         | `/api/games/:id`   | {winner,score}                                                                       |                |              | edit game                                                                                                                       |
+| HTTP Method | URL                     | Request Body                                                                         | Success status | Error Status | Description                                                                                                                     |
+| ----------- | ----------------------- | ------------------------------------------------------------------------------------ | -------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| GET         | `/auth/profile `        | Saved session                                                                        | 200            | 404          | Check if user is logged in and return profile page                                                                              |
+| POST        | `/auth/signup`          | {name, email, password,phonenumber}                                                  | 201            | 404          | Checks if fields not empty (422) and user not exists (409), then create user with encrypted password, and store user in session |
+| POST        | `/auth/login`           | {email, password}                                                                    | 200            | 401          | Checks if fields not empty (422), if user exists (404), and if password matches (404), then stores user in session              |
+| POST        | `/auth/logout`          |                                                                                      | 204            | 400          | Logs out the user                                                                                                               |
+| GET         | `api/company`           |                                                                                      |                | 400          | Show all companies/services                                                                                                     |
+| GET         | `api/company/:id`       |                                                                                      |                |              | Show specific company                                                                                                           |
+| POST        | `api/company/create`    | { name, img, user, appointment, openingDate, closingDate, openingHour, closingHour } | 201            | 400          | Create and save a new company                                                                                                   |
+| PUT         | `api/company/:id`       | {name, img, user, appointment, openingDate, closingDate, openingHour, closingHour }  | 200            | 400          | edit company                                                                                                                    |
+| DELETE      | `api/company/:id`       |                                                                                      | 201            | 400          | delete company                                                                                                                  |
+| GET         | `/api/appointment/:id`  |                                                                                      |                |              | show specific appointment                                                                                                       |
+| POST        | `/api/appointments`     | { name, description, date}                                                           | 200            | 404          | add appointment                                                                                                                 |
+| PUT         | `/api/appointments/:id` | { name, description, date }                                                          | 201            | 400          | edit appointment                                                                                                                |
+| DELETE      | `/api/appointments/:id` |                                                                                      | 200            | 400          | delete appointment                                                                                                              |
 
 <br>
 
