@@ -19,12 +19,16 @@ const userSchema = new Schema({
   },
   phonenumber: {
     type: Number,
-    required: true,
+    /* required: true, */
+  },
+  image: {
+    type: String,
+    /* default:'' */
   },
   createdCompany: [
     {
       type: Schema.Types.ObjectId,
-      ref: "Company", //???????? company ou user?
+      ref: "Company",
     },
   ],
   createdAppointment: [

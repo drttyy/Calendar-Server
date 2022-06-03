@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const appointmentSchema = new Schema({
-  tile: {
+  title: {
     type: String,
     required: true,
   },
@@ -12,7 +12,15 @@ const appointmentSchema = new Schema({
 
   date: {
     type: Date,
-    required: true,
+    /* required: true, */
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  },
+  company: {
+    type: Schema.Types.ObjectId,
+    ref: "Company",
   },
 });
 

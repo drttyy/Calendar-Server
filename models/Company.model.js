@@ -4,6 +4,15 @@ const companySchema = new Schema({
   name: {
     type: String,
     required: true,
+    unique: true,
+  },
+  type: {
+    type: String,
+    require: true,
+  },
+  description: {
+    type: String,
+    require: true,
   },
 
   img: {
@@ -18,7 +27,7 @@ const companySchema = new Schema({
     },
   ],
 
-  Appointments: [
+  appointments: [
     {
       type: Schema.Types.ObjectId,
       ref: "Appointment",
@@ -27,8 +36,10 @@ const companySchema = new Schema({
 
   date: {
     type: Date,
-    required: true,
+    /* required: true, */
   },
 });
+
+const Company = model("Company", companySchema);
 
 module.exports = Company;
