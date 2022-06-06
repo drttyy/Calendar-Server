@@ -23,7 +23,8 @@ const userSchema = new Schema({
   },
   image: {
     type: String,
-    /* default:'' */
+    default:
+      "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg",
   },
   createdCompany: [
     {
