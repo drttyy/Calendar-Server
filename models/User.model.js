@@ -19,7 +19,7 @@ const userSchema = new Schema({
   },
   phonenumber: {
     type: Number,
-    /* required: true, */
+    required: true,
   },
   image: {
     type: String,
