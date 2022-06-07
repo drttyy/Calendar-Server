@@ -2,6 +2,7 @@ const router = require("express").Router();
 const Company = require("../models/Company.model");
 const fileUploader = require("../config/cloudinary.config");
 const User = require("../models/User.model.js");
+const { isAuthenticated } = require("../middleware/jwt.middleware");
 
 // finding the company on the db
 router.get("/company/:companyId", (req, res, next) => {
