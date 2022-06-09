@@ -8,6 +8,7 @@ const { isAuthenticated } = require("../middleware/jwt.middleware");
 router.get("/company/:companyId", (req, res, next) => {
   const { companyId } = req.params;
   Company.findById(companyId)
+    .populate("appointments")
     .then((userDB) => res.status(200).json(userDB))
     .catch((err) => res.status(400).json({ message: "User not found!" }));
 });
@@ -74,36 +75,37 @@ router.delete("/company/:companyId", (req, res, next) => {
     );
 });
 
-router.post("/company", fileUploader.single("companyImg"), (req, res, next) => {
-  let { name, type, address, openingDate, closingDate, userId } = req.body;
-  let companyId;
-  Company.create({
-    name,
-    type,
-    address,
-    openingDate,
-    closingDate,
-    /* image: req.file.path, */
-    user: userId,
-  })
-    .then((createdCompany) => {
-      console.log(createdCompany);
-      companyId = createdCompany._id;
-      return User.findByIdAndUpdate(
-        userId,
-        {
-          $push: { createdCompany: companyId },
-        },
-        { new: true }
-      );
+router.post(
+  "/create-company",
+  /* fileUploader.single("companyImg"), */
+  (req, res, next) => {
+    let { name, type, address, openingDate, closingDate, image } = req.body;
+    let { _id } = req.payload;
+    console.log(req.body);
+    Company.create({
+      name,
+      type,
+      address,
+      openingDate,
+      closingDate,
+      image,
+      user: _id,
     })
-    .then((response) => {
-      res.status(200).json(response);
-    })
-    .catch((err) => {
-      res.status(400).json("Issue creating the company");
-    });
-});
+      .then((company) => {
+        return User.findByIdAndUpdate(
+          _id,
+          {
+            $push: { createdCompany: company._id },
+          },
+          { new: true }
+        );
+      })
+      .then((response) => res.status(200).json(response))
+      .catch((err) => {
+        res.status(400).json("Issue creating the company");
+      });
+  }
+);
 
 // get all the companies
 router.get("/company", (req, res, next) => {

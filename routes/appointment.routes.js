@@ -67,6 +67,46 @@ router.post("/appointment", (req, res, next) => {
     );
 });
 
+// Companies
+
+router.post("/company/appointment", (req, res, next) => {
+  const { title, description, date, company } = req.body;
+  const { _id } = req.payload;
+  let createdAppointmentId;
+
+  // CREATING USER APPOINTMENT
+
+  Appointment.create({
+    title,
+    description,
+    date,
+    user: _id,
+  })
+    .then((createdAppointment) => {
+      createdAppointmentId = createdAppointment._id;
+      return User.findByIdAndUpdate(
+        _id,
+        {
+          $push: { createdAppointment: createdAppointmentId },
+        },
+        { new: true }
+      );
+    })
+    .then(() => {
+      return Company.findByIdAndUpdate(
+        company,
+        {
+          $push: { appointments: createdAppointmentId },
+        },
+        { new: true }
+      );
+    })
+    .then((response) => res.status(200).json(response))
+    .catch((err) =>
+      res.status(400).json({ message: "Error creating the appointment" })
+    );
+});
+
 // get all the appointments from the user
 router.get("/appointment/user", (req, res, next) => {
   const { _id } = req.payload;
@@ -88,8 +128,9 @@ router.get("/appointment/user", (req, res, next) => {
 router.get("/company/:companyId/appointment", (req, res, next) => {
   const { companyId } = req.params;
 
-  Appointment.find({ company: _id })
+  Appointment.find({ company: companyId })
     .then((response) => {
+      console.log(response);
       res.status(200).json(response);
     })
     .catch((err) => {

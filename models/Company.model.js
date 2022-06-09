@@ -15,7 +15,7 @@ const companySchema = new Schema({
     require: true,
   },
 
-  img: {
+  image: {
     type: String,
     /* required: true */
   },
