@@ -28,7 +28,7 @@ app.use("/api", isAuthenticated, userRoutes);
 const companyRoutes = require("./routes/company.routes");
 app.use("/api", isAuthenticated, companyRoutes);
 
-const appointmentRoutes = require("./routes/appointment.route");
+const appointmentRoutes = require("./routes/appointment.routes");
 app.use("/api", isAuthenticated, appointmentRoutes);
 
 // ❗ To handle errors. Routes that don't exist or errors that you handle in specific routes

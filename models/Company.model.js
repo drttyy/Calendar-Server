@@ -10,7 +10,7 @@ const companySchema = new Schema({
     type: String,
     require: true,
   },
-  description: {
+  address: {
     type: String,
     require: true,
   },
@@ -34,7 +34,12 @@ const companySchema = new Schema({
     },
   ],
 
-  date: {
+  openingDate: {
+    type: Date,
+    /* required: true, */
+  },
+
+  closingDate: {
     type: Date,
     /* required: true, */
   },

@@ -19,15 +19,16 @@ router.put(
   fileUploader.single("userImg"),
   (req, res, next) => {
     const { companyId } = req.params;
-    const { name, type, description, date } = req.body;
+    const { name, type, address, openingDate, closingDate } = req.body;
     if (req.file) {
       Company.findByIdAndUpdate(
         companyId,
         {
           name,
           type,
-          description,
-          date,
+          address,
+          openingDate,
+          closingDate,
           image: req.file.path,
         },
         {
@@ -44,8 +45,9 @@ router.put(
         {
           name,
           type,
-          description,
-          date,
+          address,
+          openingDate,
+          closingDate,
         },
         {
           new: true,
@@ -73,13 +75,14 @@ router.delete("/company/:companyId", (req, res, next) => {
 });
 
 router.post("/company", fileUploader.single("companyImg"), (req, res, next) => {
-  let { name, type, description, date, userId } = req.body;
+  let { name, type, address, openingDate, closingDate, userId } = req.body;
   let companyId;
   Company.create({
     name,
     type,
-    description,
-    date,
+    address,
+    openingDate,
+    closingDate,
     /* image: req.file.path, */
     user: userId,
   })

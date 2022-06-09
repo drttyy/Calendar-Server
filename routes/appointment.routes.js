@@ -5,11 +5,11 @@ const User = require("../models/User.model");
 const Company = require("../models/Company.model");
 
 // creating an appointment
-router.post("/appointment", (req, res, next) => {
+router.post("/company-apointment", (req, res, next) => {
   const { title, description, date, userId, companyId } = req.body;
   let appointmentId;
 
-  Appointment.create({
+  return Appointment.create({
     title,
     description,
     date,
@@ -40,13 +40,62 @@ router.post("/appointment", (req, res, next) => {
     .catch((err) => res.status(400).json("Issue creating the appointment"));
 });
 
-// get all the appointments
-router.get("/appointment", (req, res, next) => {
-  Appointment.find({})
+router.post("/appointment", (req, res, next) => {
+  const { title, description, date } = req.body;
+  const { _id } = req.payload;
+
+  // CREATING USER APPOINTMENT
+
+  Appointment.create({
+    title,
+    description,
+    date,
+    user: _id,
+  })
+    .then((createdAppointment) => {
+      return User.findByIdAndUpdate(
+        _id,
+        {
+          $push: { createdAppointment: createdAppointment._id },
+        },
+        { new: true }
+      );
+    })
+    .then((response) => res.status(200).json(response))
+    .catch((err) =>
+      res.status(400).json({ message: "Error creating the appointment" })
+    );
+});
+
+// get all the appointments from the user
+router.get("/appointment/user", (req, res, next) => {
+  const { _id } = req.payload;
+
+  console.log(req.payload);
+
+  Appointment.find({ user: _id })
     .then((response) => {
       res.status(200).json(response);
     })
-    .catch((err) => res.status(400).json({ message: "No appointment found" }));
+
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json(err);
+    });
+});
+
+// get all the appointments
+router.get("/company/:companyId/appointment", (req, res, next) => {
+  const { companyId } = req.params;
+
+  Appointment.find({ company: _id })
+    .then((response) => {
+      res.status(200).json(response);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(400).json({ message: "No appointment found on this company" });
+    });
 });
 
 // finding the appointment on the db

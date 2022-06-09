@@ -87,7 +87,7 @@ router.post("/login", (req, res, next) => {
   const { firstName, lastName, email, password } = req.body;
 
   if (!email) {
-    return res.status(400).json({ errorMessage: "Please provide your email." });
+    return res.status(400).json({ errorMessage: "This email doesnt exist" });
   }
 
   // Here we use the same logic as above
